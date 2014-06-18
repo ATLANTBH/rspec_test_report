@@ -9,7 +9,7 @@ Following steps needed fo installation:
 
 2. Run bundle install to install dependencies needed for rspec_test_report application
 
-3. Configure database config file params (/rspec_test_report/config/database.rb) to point to correct database params which can be find in rspec2db.yml (/rspec_test_report/config/rspec2db.yml)
+3. Configure database config file params (/rspec_test_report/config/database.rb) to point to correct database where test reports are stored
 
 4. Run padrino rake ar:migrate to create accounts db table from existing model (e.g. bundle exec padrino rake ar:migrate)
 
