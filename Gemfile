@@ -18,7 +18,6 @@ gem 'pg'
 
 # Test requirements
 gem 'rr', :group => "test"
-gem 'rspec', :group => "test"
 gem 'rack-test', :group => "test", :require => "rack/test"
 
 # Padrino Stable Gem
