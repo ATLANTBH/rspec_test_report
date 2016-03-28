@@ -5,9 +5,9 @@ Admin.controllers :test_cases do
   get :index do
     query = "select tc.test_group, count(tc.test_group) as \"test_steps\", sum(tc.duration) as \"duration\", tr.build
       from test_cases tc INNER JOIN test_runs tr on tc.test_runs_id = tr.id
-      where tr.build = ? and tr.test_suites_id = ?
+      where tr.id = ? and tr.test_suites_id = ?
       group by tc.test_group, tr.build 
-      order by tc.test_group", params[:build_id], params[:test_suite_id]
+      order by tc.test_group", params[:tr_id], params[:test_suite_id]
     @test_cases = TestCase.find_by_sql(query)
     @build_name = params[:build_id]
     @test_suite = params[:test_suite]
