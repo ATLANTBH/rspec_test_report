@@ -3,10 +3,9 @@ require 'will_paginate/array'
 Admin.controllers :test_cases do
 
   get :index do
-    query = "select tc.test_group, count(tc.test_group) as \"test_steps\", sum(tc.duration) as \"duration\", tr.build
+    query = "select tc.test_group, tc.execution_result, tc.duration, tr.build
       from test_cases tc INNER JOIN test_runs tr on tc.test_runs_id = tr.id
       where tr.build = ? and tr.test_suites_id = ?
-      group by tc.test_group, tr.build 
       order by tc.test_group", params[:build_id], params[:test_suite_id]
     @test_cases = TestCase.find_by_sql(query)
     @build_name = params[:build_id]
@@ -16,23 +15,12 @@ Admin.controllers :test_cases do
     @pass_array = Array.new()
     @fail_array = Array.new()
 
-    @test_cases.each do |test_case|
-      pass_subquery = "select count(tc.execution_result) as \"pass_count\" 
-        from test_cases tc INNER JOIN test_runs tr on tc.test_runs_id = tr.id 
-        where tr.build = ? and tc.test_group = ? and tc.execution_result = ? and tr.test_suites_id = ?", 
-        params[:build_id], test_case.test_group, "passed", params[:test_suite_id]
-      pass_counts = TestCase.find_by_sql(pass_subquery)
-      pass_counts.each do |count|
-        @pass_array << count.pass_count
-      end
-
-      fail_subquery = "select count(tc.execution_result) as \"fail_count\" 
-        from test_cases tc INNER JOIN test_runs tr on tc.test_runs_id = tr.id 
-        where tr.build = ? and tc.test_group = ? and tc.execution_result = ? and tr.test_suites_id = ?", 
-        params[:build_id], test_case.test_group, "failed", params[:test_suite_id]
-      fail_counts = TestCase.find_by_sql(fail_subquery)
-      fail_counts.each do |count|
-        @fail_array << count.fail_count
+    @test_cases_hash = {}
+    @test_cases.each do |tc|
+      if @test_cases_hash.key? tc.test_group
+        @test_cases_hash[tc.test_group] << [tc.execution_result, tc.duration]
+      else
+        @test_cases_hash[tc.test_group] = [[tc.execution_result, tc.duration]]
       end
     end
     render 'test_cases/index'

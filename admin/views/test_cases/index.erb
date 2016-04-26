@@ -19,18 +19,21 @@
           <th><%= mat(:test_case, "Success rate") %></th>
           <th><%= mat(:test_case, :duration) %></th>          
         </tr>
-        <% @test_cases.each_with_index do |test_case, index| %>
-        <% @success_rate = ((test_case.test_steps.to_i - @fail_array[index].to_i).to_f/test_case.test_steps.to_f)*100 %>
+        <% @test_cases_hash.each do |test_case_name, test_step_results| %>
+        <% @passed = test_step_results.select { |tsr| tsr.include? 'passed'}.size %>
+        <% @failed = test_step_results.select { |tsr| tsr.include? 'failed' }.size %>
+        <% @duration = test_step_results.inject(0) { |sum, x| sum + x[1] } %>
+        <% @success_rate = ((@passed).to_f/test_step_results.size.to_f)*100 %>
         <% @formatted_rate = sprintf("%.2f", @success_rate) %>
         <% @cell_color = "#33CC33" if @success_rate == 100.00 %>
         <% @cell_color = "#EB3333" if @success_rate < 100.00 %>
-        <% @formatted_duration = sprintf("%.2f", test_case.duration.to_f) %>
+        <% @formatted_duration = sprintf("%.2f", @duration.to_f) %>
         <tr>
           <td class="first">
-          <td><%= link_to pat("#{test_case.test_group}"), url(:test_cases, :specific, {:test_group => test_case.test_group, :build_id => @build_name, :test_suite => @test_suite, :test_suite_id => @test_suite_id}) %></td>
-          <td><%= test_case.test_steps %></td>
-          <td><%= @pass_array[index] %></td>
-          <td><%= @fail_array[index] %></td>
+          <td><%= link_to pat("#{test_case_name}"), url(:test_cases, :specific, {:test_group => test_case_name, :build_id => @build_name, :test_suite => @test_suite, :test_suite_id => @test_suite_id}) %></td>
+          <td><%= test_step_results.size %></td>
+          <td><%= @passed %></td>
+          <td><%= @failed %></td>
           <td bgcolor=<%= @cell_color %>><%= @formatted_rate %></td>
           <td><%= @formatted_duration + "s" %></td>
         </tr>  
