@@ -15,27 +15,27 @@
           <!--<th><%= mat(:test_run, :computer_name) %></th>-->
           <th><%= mat(:test_run, "Execution started at") %></th>
           <th><%= mat(:test_run, "Execution finished at") %></th>
-          <th><%= mat(:test_run, :example_count) %></th>
-          <th><%= mat(:test_run, :failure_count) %></th>
-          <th><%= mat(:test_run, :pending_count) %></th>
+          <th><%= mat(:test_run, :all_examples) %></th>
+          <th><%= mat(:test_run, :all_failures) %></th>
+          <th><%= mat(:test_run, :all_pending) %></th>
           <th><%= mat(:test_run, "Success rate") %></th>
-          <th class="last"><%= mat(:test_run, :duration) %></th>
+          <th class="last"><%= mat(:test_run, :total_duration) %></th>
         </tr>
         <% @test_runs.each do |test_run| %>
-        <% @success_rate = ((test_run.example_count.to_i - test_run.failure_count.to_i).to_f/test_run.example_count.to_f)*100 %>
+        <% @success_rate = ((test_run.all_examples.to_i - test_run.all_failures.to_i).to_f/test_run.all_examples.to_f)*100 %>
         <% @formatted_rate = sprintf("%.2f", @success_rate) %>
         <% @cell_color = "#33CC33" if @success_rate == 100.00 %>
         <% @cell_color = "#EB3333" if @success_rate < 100.00 %>
-        <% @formatted_duration = sprintf("%.2f", test_run.duration.to_f) %>
+        <% @formatted_duration = sprintf("%.2f", test_run.total_duration.to_f) %>
         <tr>
           <td class="first">
           <td><%= link_to pat("#{test_run.build}"), url(:test_cases, :index, {:build_id => test_run.build, :test_suite => @test_suite, :test_suite_id => @test_suite_id}) %></td>       
           <!--<td><%= test_run.computer_name %></td>-->
-          <td><%= test_run.created_at %></td>
-          <td><%= test_run.updated_at %></td>
-          <td><%= test_run.example_count %></td>
-          <td><%= test_run.failure_count %></td>
-          <td><%= test_run.pending_count %></td>
+          <td><%= test_run.created_at_min %></td>
+          <td><%= test_run.updated_at_max %></td>
+          <td><%= test_run.all_examples %></td>
+          <td><%= test_run.all_failures %></td>
+          <td><%= test_run.all_pending %></td>
           <td bgcolor=<%= @cell_color %>><%= @formatted_rate + "%" %></td>
           <td><%= @formatted_duration + "s" %></td>
         </tr>
