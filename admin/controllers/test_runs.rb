@@ -3,7 +3,7 @@ require 'will_paginate/array'
 Admin.controllers :test_runs do
 
   get :index do
-    query = "select min(id) as id, sum(duration) as total_duration, sum(example_count) as all_examples, sum(failure_count) as all_failures, sum(pending_count) as all_pending, max(computer_name) as computer_name, min(created_at) as created_at_min, max(updated_at) as updated_at_max, max(test_suites_id) as test_suites_id, build from test_runs where test_suites_id=1 group by build", params[:test_suite_id]
+    query = "select min(id) as id, sum(duration) as total_duration, sum(example_count) as all_examples, sum(failure_count) as all_failures, sum(pending_count) as all_pending, max(computer_name) as computer_name, min(created_at) as created_at_min, max(updated_at) as updated_at_max, max(test_suites_id) as test_suites_id, build from test_runs where test_suites_id = ? group by build", params[:test_suite_id]
     @results = TestRun.find_by_sql(query)
     @test_runs = @results.paginate(:page => params[:page], :per_page => 10)
     @test_suite = params[:test_suite]
