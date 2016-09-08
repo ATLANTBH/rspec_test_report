@@ -7,8 +7,8 @@
      :reconnect => true,
      :database  => 'rspec',
      :pool      => 5,
-     :username  => 'postgres',
-     :password  => 'password',
+     :username  => 'test',
+     :password  => 'test',
      :host      => 'localhost'
    }
 
