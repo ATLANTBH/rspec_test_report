@@ -22,7 +22,7 @@ gem 'rr', :group => "test"
 gem 'rack-test', :group => "test", :require => "rack/test"
 
 # Padrino Stable Gem
-gem 'padrino'
+gem 'padrino', '0.10.7'
 
 # Pagination gem
 gem 'will_paginate'
