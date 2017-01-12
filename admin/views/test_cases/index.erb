@@ -16,12 +16,14 @@
           <th><%= mat(:test_case, "Test steps") %></th>
           <th><%= mat(:test_case, "Steps passed") %></th>
           <th><%= mat(:test_case, "Steps failed") %></th>
+          <th><%= mat(:test_case, "Steps pending") %></th>
           <th><%= mat(:test_case, "Success rate") %></th>
           <th><%= mat(:test_case, :duration) %></th>          
         </tr>
         <% @test_cases_hash.each do |test_case_name, test_step_results| %>
         <% @passed = test_step_results.select { |tsr| tsr.include? 'passed'}.size %>
         <% @failed = test_step_results.select { |tsr| tsr.include? 'failed' }.size %>
+        <% @pending = test_step_results.select { |tsr| tsr.include? 'pending' }.size %>
         <% @duration = test_step_results.inject(0) { |sum, x| sum + x[1] } %>
         <% @success_rate = ((@passed).to_f/test_step_results.size.to_f)*100 %>
         <% @formatted_rate = sprintf("%.2f", @success_rate) %>
@@ -34,6 +36,7 @@
           <td><%= test_step_results.size %></td>
           <td><%= @passed %></td>
           <td><%= @failed %></td>
+          <td><%= @pending %></td>
           <td bgcolor=<%= @cell_color %>><%= @formatted_rate %></td>
           <td><%= @formatted_duration + "s" %></td>
         </tr>  

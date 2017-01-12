@@ -22,7 +22,7 @@
           <th class="last"><%= mat(:test_run, :total_duration) %></th>
         </tr>
         <% @test_runs.each do |test_run| %>
-        <% @success_rate = ((test_run.all_examples.to_i - test_run.all_failures.to_i).to_f/test_run.all_examples.to_f)*100 %>
+        <% @success_rate = ((test_run.all_examples.to_i - (test_run.all_failures.to_i + test_run.all_pending.to_i)).to_f/test_run.all_examples.to_f)*100 %>
         <% @formatted_rate = sprintf("%.2f", @success_rate) %>
         <% @cell_color = "#33CC33" if @success_rate == 100.00 %>
         <% @cell_color = "#EB3333" if @success_rate < 100.00 %>
