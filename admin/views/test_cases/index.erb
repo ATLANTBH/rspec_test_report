@@ -18,7 +18,8 @@
           <th><%= mat(:test_case, "Steps failed") %></th>
           <th><%= mat(:test_case, "Steps pending") %></th>
           <th><%= mat(:test_case, "Success rate") %></th>
-          <th><%= mat(:test_case, :duration) %></th>          
+          <th><%= mat(:test_case, :duration) %></th>
+          <th>Checked</th>        
         </tr>
         <% @test_cases_hash.each do |test_case_name, test_step_results| %>
         <% @passed = test_step_results.select { |tsr| tsr.include? 'passed'}.size %>
@@ -39,6 +40,7 @@
           <td><%= @pending %></td>
           <td bgcolor=<%= @cell_color %>><%= @formatted_rate %></td>
           <td><%= @formatted_duration + "s" %></td>
+          <td><input type="checkbox" name="manual_check"></td>
         </tr>  
         <% end %>
       </table>
