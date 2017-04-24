@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-
+ruby '2.2.1'
 # Server requirements
 # gem 'thin' # or mongrel
 # gem 'trinidad', :platform => 'jruby'
